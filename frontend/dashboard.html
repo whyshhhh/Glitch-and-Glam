@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StyleSense – Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body class="dashboard-page">
+
+  <!-- ── Top Navigation ──────────────────────────────────── -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon-sm">✦</span>
+      <span class="brand-name-sm">StyleSense</span>
+    </div>
+    <div class="nav-user">
+      <span class="user-greeting">Hello, <strong id="navUsername">Stylist</strong></span>
+      <button class="btn-outline-sm" onclick="logout()">Sign Out</button>
+    </div>
+  </header>
+
+  <!-- ── Main Layout ─────────────────────────────────────── -->
+  <main class="dashboard-layout">
+
+    <!-- LEFT: Input Panel -->
+    <aside class="input-panel">
+      <div class="panel-header">
+        <h2>Style Profile</h2>
+        <p>Tell us about you & your day</p>
+      </div>
+
+      <form id="styleForm" onsubmit="generateOutfit(event)">
+
+        <div class="form-group">
+          <label>Body Type</label>
+          <select id="bodyType" required>
+            <option value="">Select body type</option>
+            <option value="Hourglass">Hourglass</option>
+            <option value="Pear">Pear</option>
+            <option value="Apple">Apple</option>
+            <option value="Rectangle">Rectangle</option>
+            <option value="Inverted Triangle">Inverted Triangle</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Occasion</label>
+          <select id="occasion" required>
+            <option value="">Select occasion</option>
+            <option value="Casual Day Out">Casual Day Out</option>
+            <option value="Work / Office">Work / Office</option>
+            <option value="Date Night">Date Night</option>
+            <option value="Wedding / Formal Event">Wedding / Formal Event</option>
+            <option value="Beach / Vacation">Beach / Vacation</option>
+            <option value="Party / Night Out">Party / Night Out</option>
+            <option value="Gym / Workout">Gym / Workout</option>
+            <option value="Brunch">Brunch</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Weather</label>
+          <select id="weather" required>
+            <option value="">Select weather</option>
+            <option value="Hot & Sunny">Hot & Sunny</option>
+            <option value="Warm & Pleasant">Warm & Pleasant</option>
+            <option value="Cool & Breezy">Cool & Breezy</option>
+            <option value="Cold & Wintery">Cold & Wintery</option>
+            <option value="Rainy">Rainy</option>
+            <option value="Humid">Humid</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Budget</label>
+          <select id="budget" required>
+            <option value="">Select budget</option>
+            <option value="Under $50 (budget-friendly)">Under $50</option>
+            <option value="$50–$150 (mid-range)">$50–$150 (Mid-Range)</option>
+            <option value="$150–$500 (premium)">$150–$500 (Premium)</option>
+            <option value="$500+ (luxury)">$500+ (Luxury)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Style Preference</label>
+          <select id="stylePreference" required>
+            <option value="">Select style</option>
+            <option value="Minimalist">Minimalist</option>
+            <option value="Bohemian">Bohemian</option>
+            <option value="Streetwear">Streetwear</option>
+            <option value="Classic & Elegant">Classic & Elegant</option>
+            <option value="Edgy & Bold">Edgy & Bold</option>
+            <option value="Romantic & Feminine">Romantic & Feminine</option>
+            <option value="Preppy">Preppy</option>
+            <option value="Athleisure">Athleisure</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Color Preference <span class="optional-label">(optional)</span></label>
+          <input type="text" id="colorPreference" placeholder="e.g., Earthy tones, Pastels, Blues" />
+        </div>
+
+        <button type="submit" class="btn-generate" id="generateBtn">
+          <span id="generateBtnText">✦ Generate My Look</span>
+          <span id="generateBtnLoader" class="hidden">Styling you...</span>
+        </button>
+
+      </form>
+
+      <!-- Recent History -->
+      <div class="history-section" id="historySection">
+        <h3>Recent Looks</h3>
+        <div id="historyList" class="history-list">
+          <p class="history-empty">Your style history will appear here.</p>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- RIGHT: Results Panel -->
+    <section class="results-panel">
+
+      <!-- Empty / Welcome State -->
+      <div id="welcomeState" class="welcome-state">
+        <div class="welcome-icon">✦</div>
+        <h2>Ready to discover your look?</h2>
+        <p>Fill in your style profile and let AI craft the perfect outfit for you.</p>
+        <div class="welcome-chips">
+          <span>AI-Powered</span>
+          <span>Weather Smart</span>
+          <span>Budget Friendly</span>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loadingState" class="loading-state hidden">
+        <div class="loading-animation">
+          <div class="loading-ring"></div>
+          <div class="loading-ring delay-1"></div>
+          <div class="loading-ring delay-2"></div>
+        </div>
+        <h3>Crafting your perfect look...</h3>
+        <p>Our AI stylist is analyzing your preferences</p>
+        <div class="loading-steps">
+          <div class="step active" id="step1">✦ Analyzing style profile</div>
+          <div class="step" id="step2">✦ Selecting outfit pieces</div>
+          <div class="step" id="step3">✦ Matching colors & accessories</div>
+        </div>
+      </div>
+
+      <!-- Results State -->
+      <div id="resultsState" class="hidden">
+
+        <!-- Color of the Day Banner -->
+        <div class="cotd-banner" id="cotdBanner">
+          <div class="cotd-label">✦ Color of the Day</div>
+          <div class="cotd-name" id="cotdName">—</div>
+          <div class="cotd-swatch" id="cotdSwatch"></div>
+        </div>
+
+        <!-- Outfit Title & Description -->
+        <div class="result-card outfit-card">
+          <div class="card-badge">AI Recommendation</div>
+          <h2 class="outfit-title" id="outfitTitle">—</h2>
+          <p class="outfit-desc" id="outfitDesc">—</p>
+        </div>
+
+        <!-- Color Palette -->
+        <div class="result-card">
+          <h3 class="card-title">🎨 Color Palette</h3>
+          <div class="palette-row" id="paletteRow"></div>
+        </div>
+
+        <!-- Two-Column Grid: Accessories + Hairstyle -->
+        <div class="result-grid-2">
+          <div class="result-card">
+            <h3 class="card-title">💍 Accessories</h3>
+            <ul class="styled-list" id="accessoriesList"></ul>
+          </div>
+          <div class="result-card">
+            <h3 class="card-title">💇 Hairstyle</h3>
+            <p class="hairstyle-text" id="hairstyleText">—</p>
+          </div>
+        </div>
+
+        <!-- Styling Explanation -->
+        <div class="result-card explanation-card">
+          <h3 class="card-title">💡 Why This Works</h3>
+          <p id="stylingExplanation">—</p>
+        </div>
+
+        <!-- Budget Note -->
+        <div class="result-card budget-card">
+          <h3 class="card-title">💰 Budget Tip</h3>
+          <p id="budgetNote">—</p>
+        </div>
+
+        <!-- Pinterest Inspiration Section -->
+        <div class="pinterest-section">
+          <h3 class="section-title">
+            <span class="pinterest-icon">📌</span> Visual Inspiration
+          </h3>
+          <p class="pinterest-subtitle">Explore curated Pinterest boards for your look</p>
+          <div class="pinterest-grid" id="pinterestGrid"></div>
+        </div>
+
+        <!-- Regenerate Button -->
+        <button class="btn-regenerate" onclick="scrollToForm()">
+          ↺ Regenerate Look
+        </button>
+
+      </div>
+
+      <!-- Error State -->
+      <div id="errorState" class="error-state hidden">
+        <div class="error-icon">⚠</div>
+        <h3>Something went wrong</h3>
+        <p id="errorMessage">Could not generate recommendation.</p>
+        <button class="btn-primary" onclick="hideError()">Try Again</button>
+      </div>
+
+    </section>
+  </main>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

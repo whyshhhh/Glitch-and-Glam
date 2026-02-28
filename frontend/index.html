@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StyleSense – AI Fashion Advisor</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body class="auth-page">
+
+  <!-- Animated background blobs -->
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+  <div class="bg-blob blob-3"></div>
+
+  <div class="auth-container">
+
+    <!-- Logo / Branding -->
+    <div class="auth-brand">
+      <div class="brand-icon">✦</div>
+      <h1 class="brand-name">StyleSense</h1>
+      <p class="brand-tagline">Your AI-Powered Fashion Advisor</p>
+    </div>
+
+    <!-- Tab Switcher -->
+    <div class="auth-tabs">
+      <button class="tab-btn active" id="loginTab" onclick="switchTab('login')">Sign In</button>
+      <button class="tab-btn" id="registerTab" onclick="switchTab('register')">Create Account</button>
+    </div>
+
+    <!-- Login Form -->
+    <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="loginUsername">Username</label>
+        <input type="text" id="loginUsername" placeholder="Enter your username" required />
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter your password" required />
+      </div>
+      <button type="submit" class="btn-primary" id="loginBtn">
+        <span class="btn-text">Sign In</span>
+        <span class="btn-loader hidden">⟳</span>
+      </button>
+      <p id="loginError" class="form-error hidden"></p>
+    </form>
+
+    <!-- Register Form -->
+    <form id="registerForm" class="auth-form hidden" onsubmit="handleRegister(event)">
+      <div class="form-group">
+        <label for="regUsername">Username</label>
+        <input type="text" id="regUsername" placeholder="Choose a username" required />
+      </div>
+      <div class="form-group">
+        <label for="regEmail">Email Address</label>
+        <input type="email" id="regEmail" placeholder="your@email.com" required />
+      </div>
+      <div class="form-group">
+        <label for="regPassword">Password</label>
+        <input type="password" id="regPassword" placeholder="Create a strong password" required />
+      </div>
+      <button type="submit" class="btn-primary" id="registerBtn">
+        <span class="btn-text">Create Account</span>
+        <span class="btn-loader hidden">⟳</span>
+      </button>
+      <p id="registerError" class="form-error hidden"></p>
+    </form>
+
+    <!-- Features Preview -->
+    <div class="features-preview">
+      <div class="feature-chip">✦ AI Outfit Generator</div>
+      <div class="feature-chip">🌤 Weather-Aware</div>
+      <div class="feature-chip">📌 Pinterest Links</div>
+      <div class="feature-chip">💰 Budget Smart</div>
+    </div>
+
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

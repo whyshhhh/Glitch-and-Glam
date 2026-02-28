@@ -1,0 +1,19 @@
+# StyleSense – Python Dependencies
+# Compatible with Python 3.12+
+
+# Web Framework
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+
+# Authentication & Security
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.12
+
+# AI Integration
+google-generativeai==0.8.3
+
+# Environment Variables
+python-dotenv==1.0.1
+
+# Pydantic (bundled with FastAPI, explicit pin for stability)
+pydantic==2.10.3
