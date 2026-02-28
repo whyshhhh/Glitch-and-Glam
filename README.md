@@ -25,7 +25,7 @@ venv\Scripts\activate           # Windows
 pip install -r requirements.txt
 
 # Configure environment
-cp .env.example .env
+cp .env.example backend/.env
 # → Edit .env and add your GEMINI_API_KEY
 ```
 
